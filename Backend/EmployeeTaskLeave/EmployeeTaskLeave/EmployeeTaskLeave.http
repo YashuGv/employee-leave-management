@@ -1,0 +1,6 @@
+@EmployeeTaskLeave_HostAddress = http://localhost:5241
+
+GET {{EmployeeTaskLeave_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
