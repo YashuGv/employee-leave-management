@@ -4,8 +4,8 @@ namespace TaskLeaveManagement.Application.Interfaces.Repositories
 {
     public interface ILeaveRequestRepository
     {
-        Task<List<LeaveRequest>> GetAllAsync();
-        Task<LeaveRequest?> GetByIdAsync(int id);
-        Task AddAsync(LeaveRequest leaveRequest);
+        public Task<List<LeaveRequest>> GetAllAsync();
+        public Task<LeaveRequest?> GetByIdAsync(int id);
+        public Task AddAsync(LeaveRequest leaveRequest);
     }
 }

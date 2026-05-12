@@ -4,8 +4,8 @@ namespace TaskLeaveManagement.Application.Interfaces.Repositories
 {
     public interface ITaskRepository
     {
-        Task<List<TaskItem>> GetAllAsync();
-        Task<TaskItem?> GetByIdAsync(int id);
-        Task AddAsync(TaskItem taskItem);
+        public Task<List<TaskItem>> GetAllAsync();
+        public Task<TaskItem?> GetByIdAsync(int id);
+        public Task AddAsync(TaskItem taskItem);
     }
 }
