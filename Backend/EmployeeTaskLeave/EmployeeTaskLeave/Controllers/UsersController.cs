@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskLeaveManagement.Application.Common;
 using TaskLeaveManagement.Application.Interfaces.Services;
@@ -7,14 +8,15 @@ namespace EmployeeTaskLeave.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersControllerController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
-        public UsersControllerController(IUserService userService)
+        public UsersController(IUserService userService)
         {
             this.userService = userService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
