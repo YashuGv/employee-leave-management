@@ -8,9 +8,12 @@ using System.Text;
 using TaskLeaveManagement.Application.Interfaces.Repositories;
 using TaskLeaveManagement.Application.Interfaces.Services;
 using TaskLeaveManagement.Application.Services;
+using TaskLeaveManagement.Application.Validators;
 using TaskLeaveManagement.Infrastructure.Data;
 using TaskLeaveManagement.Infrastructure.Repositories;
 using TaskLeaveManagement.Infrastructure.Services;
+using FluentValidation;
+using TaskLeaveManagement.Application.Validators;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -94,6 +97,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("TaskLeaveDb"));
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();

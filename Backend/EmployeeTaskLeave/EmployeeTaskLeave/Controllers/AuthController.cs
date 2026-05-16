@@ -31,5 +31,20 @@ namespace EmployeeTaskLeave.API.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterRequestDto request)
+        {
+            await _authService.RegisterAsync(request);
+
+            var response = new ApiResponse<object>
+            {
+                Success = true,
+                Message = "User registered successfully",
+                StatusCode = 200
+            };
+
+            return Ok(response);
+        }
     }
 }
