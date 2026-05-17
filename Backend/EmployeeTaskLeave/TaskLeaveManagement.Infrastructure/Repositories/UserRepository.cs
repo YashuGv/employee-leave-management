@@ -37,5 +37,20 @@ namespace TaskLeaveManagement.Infrastructure.Repositories
         {
             return await _context.Users.FindAsync(id);
         }
+
+        public async Task<List<User>> GetPagedUsersAsync(int pageNumber, int pageSize, string? role)
+        {
+            var query = _context.Users.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(role))
+            {
+                query = query.Where(x => x.Role == role);
+            }
+
+            return await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
     }
 }
