@@ -1,4 +1,5 @@
-﻿using TaskLeaveManagement.Application.DTOs;
+﻿using AutoMapper;
+using TaskLeaveManagement.Application.DTOs;
 using TaskLeaveManagement.Application.Exceptions;
 using TaskLeaveManagement.Application.Interfaces.Repositories;
 using TaskLeaveManagement.Application.Interfaces.Services;
@@ -8,10 +9,11 @@ namespace TaskLeaveManagement.Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-
-        public UserService(IUserRepository userRepository)
+        private readonly IMapper _mapper;
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<List<UserDto>> GetAllUsersAsync()
@@ -23,13 +25,7 @@ namespace TaskLeaveManagement.Application.Services
                 throw new NotFoundException("No users found");
             }
 
-            return users.Select(user => new UserDto
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                Role = user.Role
-            }).ToList();
+            return _mapper.Map<List<UserDto>>(users);
         }
     }
 }

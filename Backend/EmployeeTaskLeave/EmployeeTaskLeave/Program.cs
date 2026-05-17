@@ -1,4 +1,5 @@
 ﻿using EmployeeTaskLeave.API.Middleware;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,13 +8,12 @@ using Serilog;
 using System.Text;
 using TaskLeaveManagement.Application.Interfaces.Repositories;
 using TaskLeaveManagement.Application.Interfaces.Services;
+using TaskLeaveManagement.Application.Mappings;
 using TaskLeaveManagement.Application.Services;
 using TaskLeaveManagement.Application.Validators;
 using TaskLeaveManagement.Infrastructure.Data;
 using TaskLeaveManagement.Infrastructure.Repositories;
 using TaskLeaveManagement.Infrastructure.Services;
-using FluentValidation;
-using TaskLeaveManagement.Application.Validators;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -95,6 +95,8 @@ builder.Services.AddSwaggerGen(options =>
             }
         });
 });
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("TaskLeaveDb"));
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
