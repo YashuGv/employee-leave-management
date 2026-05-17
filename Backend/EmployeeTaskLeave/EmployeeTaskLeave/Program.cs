@@ -97,7 +97,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
+builder.Services.AddMemoryCache();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("TaskLeaveDb"));
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 

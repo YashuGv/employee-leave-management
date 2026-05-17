@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
 using TaskLeaveManagement.Application.Common;
 using TaskLeaveManagement.Application.DTOs;
 using TaskLeaveManagement.Application.Exceptions;
@@ -11,14 +12,24 @@ namespace TaskLeaveManagement.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        private readonly IMemoryCache _memoryCache;
+        public UserService(IUserRepository userRepository, IMapper mapper, IMemoryCache memoryCache)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _memoryCache = memoryCache;
         }
 
         public async Task<List<UserDto>> GetAllUsersAsync()
         {
+            const string cacheKey = "all_users";
+
+            if (_memoryCache.TryGetValue(cacheKey,
+                out List<UserDto>? cachedUsers))
+            {
+                return cachedUsers!;
+            }
+
             var users = await _userRepository.GetAllAsync();
 
             if (!users.Any())
@@ -26,7 +37,13 @@ namespace TaskLeaveManagement.Application.Services
                 throw new NotFoundException("No users found");
             }
 
-            return _mapper.Map<List<UserDto>>(users);
+            var mappedUsers = _mapper.Map<List<UserDto>>(users);
+
+            var cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+
+            _memoryCache.Set(cacheKey,mappedUsers,cacheOptions);
+
+            return mappedUsers;
         }
 
         public async Task<List<UserDto>> GetPagedUsersAsync(PaginationParams paginationParams, string? role)
